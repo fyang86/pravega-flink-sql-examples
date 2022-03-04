@@ -1,0 +1,472 @@
+﻿{
+  "paragraphs": [
+    {
+      "text": "%flink.ssql\n\nshow tables;",
+      "user": "anonymous",
+      "dateUpdated": "2022-03-04T06:41:36+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "table": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1646375964831_1199314315",
+      "id": "paragraph_1646375744635_1185385876",
+      "dateCreated": "2022-03-04T06:39:24+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:8503",
+      "dateFinished": "2022-03-04T06:41:35+0000",
+      "dateStarted": "2022-03-04T06:41:35+0000"
+    },
+    {
+      "text": "%flink.ssql\r\n\r\n-- 查询指定窗口时间内最受欢迎的出租车供应商\r\nCREATE TABLE TaxiRide1 (\r\n    rideId INT,\r\n    vendorId INT,\r\n    pickupTime TIMESTAMP(3),\r\n    dropOffTime TIMESTAMP(3),\r\n    passengerCount INT,\r\n    tripDistance FLOAT,\r\n    startLocationId INT,\r\n    destLocationId INT,\r\n    startLocationBorough STRING,\r\n    startLocationZone STRING,\r\n    startLocationServiceZone STRING,\r\n    destLocationBorough STRING,\r\n    destLocationZone STRING,\r\n    destLocationServiceZone STRING,\r\n    WATERMARK FOR pickupTime AS pickupTime - INTERVAL '30' SECONDS\r\n) with (\r\n    'connector' = 'pravega',\r\n    'controller-uri' = 'tcp://pravega:9090',\r\n    'scope' = 'taxi',\r\n    'scan.execution.type' = 'streaming',\r\n    'scan.reader-group.name' = 'popular-vendor',\r\n    'scan.streams' = 'trip',\r\n    'format' = 'json'\r\n);",
+      "user": "anonymous",
+      "dateUpdated": "2022-03-04T06:41:45+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1646375964832_578230800",
+      "id": "paragraph_1646373304253_53482095",
+      "dateCreated": "2022-03-04T06:39:24+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8504",
+      "dateFinished": "2022-03-04T06:41:44+0000",
+      "dateStarted": "2022-03-04T06:41:43+0000"
+    },
+    {
+      "text": "%flink.ssql\n\nSELECT \n    vendorId,\n    HOP_START (pickupTime, INTERVAL '5' MINUTE, INTERVAL '15' MINUTE) as window_start,\n    HOP_END (pickupTime, INTERVAL '5' MINUTE, INTERVAL '15' MINUTE) as window_end,\n    count(vendorId) as cnt\nFROM\n    (SELECT vendorId, pickupTime FROM TaxiRide1)\nGROUP BY vendorId, HOP (pickupTime, INTERVAL '5' MINUTE, INTERVAL '15' MINUTE);",
+      "user": "anonymous",
+      "dateUpdated": "2022-03-04T06:41:49+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "vendorId": "string",
+                      "window_start": "string",
+                      "window_end": "string",
+                      "cnt": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default",
+                  "stacked": true
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default",
+                  "style": "expand"
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "vendorId",
+                  "index": 0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "window_start",
+                  "index": 1,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1646375964833_761740708",
+      "id": "paragraph_1646373434133_1285188635",
+      "dateCreated": "2022-03-04T06:39:24+0000",
+      "status": "ABORT",
+      "$$hashKey": "object:8505",
+      "dateFinished": "2022-03-04T06:43:14+0000",
+      "dateStarted": "2022-03-04T06:41:49+0000"
+    },
+    {
+      "text": "%flink.ssql\n\n-- 查询指定窗口时间内最热门的目的地\nCREATE TABLE TaxiRide2 (\n    rideId INT,\n    vendorId INT,\n    pickupTime TIMESTAMP(3),\n    dropOffTime TIMESTAMP(3),\n    passengerCount INT,\n    tripDistance FLOAT,\n    startLocationId INT,\n    destLocationId INT,\n    startLocationBorough STRING,\n    startLocationZone STRING,\n    startLocationServiceZone STRING,\n    destLocationBorough STRING,\n    destLocationZone STRING,\n    destLocationServiceZone STRING,\n    WATERMARK FOR pickupTime AS pickupTime - INTERVAL '30' SECONDS\n) with (\n    'connector' = 'pravega',\n    'controller-uri' = 'tcp://pravega:9090',\n    'scope' = 'taxi',\n    'scan.execution.type' = 'streaming',\n    'scan.reader-group.name' = 'popular-dest',\n    'scan.streams' = 'trip',\n    'format' = 'json'\n);",
+      "user": "anonymous",
+      "dateUpdated": "2022-03-04T06:42:15+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1646375964833_513732279",
+      "id": "paragraph_1646373449008_1996011601",
+      "dateCreated": "2022-03-04T06:39:24+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8506",
+      "dateFinished": "2022-03-04T06:42:13+0000",
+      "dateStarted": "2022-03-04T06:42:13+0000"
+    },
+    {
+      "text": "%flink.ssql\n\nSELECT\n    destLocationId, window_start, window_end, cnt\nFROM\n    (SELECT\n        destLocationId,\n        HOP_START(pickupTime, INTERVAL '5' MINUTE, INTERVAL '15' MINUTE) AS window_start,\n        HOP_END(pickupTime, INTERVAL '5' MINUTE, INTERVAL '15' MINUTE) AS window_end,\n        COUNT(destLocationId) AS cnt\n    FROM\n        (SELECT pickupTime, destLocationId FROM TaxiRide2)\n    GROUP BY destLocationId, HOP(pickupTime, INTERVAL '5' MINUTE, INTERVAL '15' MINUTE))\nWHERE cnt > 8;",
+      "user": "anonymous",
+      "dateUpdated": "2022-03-04T06:42:19+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "destLocationId": "string",
+                      "window_start": "string",
+                      "window_end": "string",
+                      "cnt": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1646375964833_409273213",
+      "id": "paragraph_1646374556613_827467217",
+      "dateCreated": "2022-03-04T06:39:24+0000",
+      "status": "ABORT",
+      "$$hashKey": "object:8507",
+      "dateFinished": "2022-03-04T06:43:21+0000",
+      "dateStarted": "2022-03-04T06:42:19+0000"
+    },
+    {
+      "text": "%flink.ssql\n\n-- 查询指定窗口时间内前往每个目的地的乘客数\nCREATE TABLE TaxiRide3 (\n    rideId INT,\n    vendorId INT,\n    pickupTime TIMESTAMP(3),\n    dropOffTime TIMESTAMP(3),\n    passengerCount INT,\n    tripDistance FLOAT,\n    startLocationId INT,\n    destLocationId INT,\n    startLocationBorough STRING,\n    startLocationZone STRING,\n    startLocationServiceZone STRING,\n    destLocationBorough STRING,\n    destLocationZone STRING,\n    destLocationServiceZone STRING,\n    WATERMARK FOR dropOffTime AS dropOffTime - INTERVAL '30' SECONDS\n) with (\n    'connector' = 'pravega',\n    'controller-uri' = 'tcp://pravega:9090',\n    'scope' = 'taxi',\n    'scan.execution.type' = 'streaming',\n    'scan.reader-group.name' = 'max-traveller',\n    'scan.streams' = 'trip',\n    'format' = 'json'\n);",
+      "user": "anonymous",
+      "dateUpdated": "2022-03-04T06:42:43+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1646375964834_663590223",
+      "id": "paragraph_1646374567140_999543786",
+      "dateCreated": "2022-03-04T06:39:24+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8508",
+      "dateFinished": "2022-03-04T06:42:43+0000",
+      "dateStarted": "2022-03-04T06:42:43+0000"
+    },
+    {
+      "text": "%flink.ssql\n\nSELECT \n    destLocationZone,\n    TUMBLE_START (dropOffTime, INTERVAL '1' HOUR) as window_start,\n    TUMBLE_END (dropOffTime, INTERVAL '1' HOUR) as window_end,\n    count(passengerCount) as cnt\nFROM\n    (SELECT passengerCount, dropOffTime, destLocationZone FROM TaxiRide3)\nGROUP BY destLocationZone, TUMBLE (dropOffTime, INTERVAL '1' HOUR);",
+      "user": "anonymous",
+      "dateUpdated": "2022-03-04T06:43:10+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {
+                    "columns": [
+                      {
+                        "name": "destLocationZone0",
+                        "visible": true,
+                        "width": "*",
+                        "sort": {},
+                        "filters": [
+                          {}
+                        ],
+                        "pinned": ""
+                      },
+                      {
+                        "name": "window_start1",
+                        "visible": true,
+                        "width": "*",
+                        "sort": {
+                          "priority": 0,
+                          "direction": "asc"
+                        },
+                        "filters": [
+                          {}
+                        ],
+                        "pinned": ""
+                      },
+                      {
+                        "name": "window_end2",
+                        "visible": true,
+                        "width": "*",
+                        "sort": {},
+                        "filters": [
+                          {}
+                        ],
+                        "pinned": ""
+                      },
+                      {
+                        "name": "cnt3",
+                        "visible": true,
+                        "width": "*",
+                        "sort": {},
+                        "filters": [
+                          {}
+                        ],
+                        "pinned": ""
+                      }
+                    ],
+                    "scrollFocus": {},
+                    "selection": [],
+                    "grouping": {
+                      "grouping": [],
+                      "aggregations": [],
+                      "rowExpandedStates": {}
+                    },
+                    "treeView": {},
+                    "pagination": {
+                      "paginationCurrentPage": 1,
+                      "paginationPageSize": 250
+                    }
+                  },
+                  "tableColumnTypeState": {
+                    "names": {
+                      "destLocationZone": "string",
+                      "window_start": "string",
+                      "window_end": "string",
+                      "cnt": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1646375964834_1239528074",
+      "id": "paragraph_1646374575300_386434913",
+      "dateCreated": "2022-03-04T06:39:24+0000",
+      "status": "ABORT",
+      "$$hashKey": "object:8509",
+      "dateFinished": "2022-03-04T06:43:30+0000",
+      "dateStarted": "2022-03-04T06:42:48+0000"
+    }
+  ],
+  "name": "flink demo",
+  "id": "2GW7TB1F6",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.10.1",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {},
+  "path": "/flink demo"
+}
