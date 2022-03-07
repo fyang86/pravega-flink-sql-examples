@@ -22,6 +22,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import java.net.URI;
 
 import static nytaxi.common.Constants.CREATE_STREAM;
+import static nytaxi.common.Constants.DEFAULT_CONTROLLER_URI;
 import static nytaxi.common.Constants.DEFAULT_NO_SEGMENTS;
 import static nytaxi.common.Constants.DEFAULT_POPULAR_DEST_THRESHOLD;
 import static nytaxi.common.Constants.DEFAULT_SCOPE;
@@ -36,10 +37,10 @@ public abstract class AbstractHandler {
     private final boolean create;
     private final int limit;
 
-    public AbstractHandler(String controllerUri) {
+    public AbstractHandler() {
         this.scope = DEFAULT_SCOPE;
         this.stream = DEFAULT_STREAM;
-        this.controllerUri = controllerUri;
+        this.controllerUri = DEFAULT_CONTROLLER_URI;
         this.create = CREATE_STREAM;
         this.limit = DEFAULT_POPULAR_DEST_THRESHOLD;
     }
@@ -66,42 +67,6 @@ public abstract class AbstractHandler {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
         return env;
-    }
-
-    public String createTableDdl(String watermarkDdl, String readerGroupName) {
-        return String.format(
-                "CREATE TABLE TaxiRide (%n" +
-                        "  rideId INT,%n" +
-                        "  vendorId INT,%n" +
-                        "  pickupTime TIMESTAMP(3),%n" +
-                        "  dropOffTime TIMESTAMP(3),%n" +
-                        "  passengerCount INT,%n" +
-                        "  tripDistance FLOAT,%n" +
-                        "  startLocationId INT,%n" +
-                        "  destLocationId INT,%n" +
-                        "  startLocationBorough STRING,%n" +
-                        "  startLocationZone STRING,%n" +
-                        "  startLocationServiceZone STRING,%n" +
-                        "  destLocationBorough STRING,%n" +
-                        "  destLocationZone STRING,%n" +
-                        "  destLocationServiceZone STRING,%n" +
-                        "  %s" +
-                        ") with (%n" +
-                        "  'connector' = 'pravega',%n" +
-                        "  'controller-uri' = '%s',%n" +
-                        "  'scope' = '%s',%n" +
-                        "  'scan.execution.type' = '%s',%n" +
-                        "  'scan.reader-group.name' = '%s',%n" +
-                        "  'scan.streams' = '%s',%n" +
-                        "  'format' = 'json'%n" +
-                        ")",
-                watermarkDdl,
-                controllerUri,
-                scope,
-                "streaming",
-                readerGroupName,
-                stream,
-                stream);
     }
 
     public abstract void handleRequest();

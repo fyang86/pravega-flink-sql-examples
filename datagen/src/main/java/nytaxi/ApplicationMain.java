@@ -25,43 +25,8 @@ public class ApplicationMain {
 
     public static void main(String ... args) {
 
-        /**
-         * Parameters
-         *     -input Input dataset file path, default:/opt/datagen/user_behavior.log
-         *     -speedup Data generating speed, default:1000
-         *     -controlleruri Pravega controller uri, default:tcp://pravega:9090
-         *     -schemaregistryuri Schema registry service uri, default:http://schemaregistry:9092
-         */
-
-        // read parameters
-        Options options = getOptions();
-        CommandLine cmd = null;
-        try {
-            cmd = parseCommandLineArgs(options, args);
-        } catch (ParseException e) {
-            log.error("%s.%n", e.getMessage());
-            final HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("Datagen", options);
-            System.exit(1);
-        }
-
-        final String controllerUri = cmd.getOptionValue("controlleruri") == null ?
-                Constants.DEFAULT_CONTROLLER_URI : cmd.getOptionValue("controlleruri");
-
-        AbstractHandler handler = new PrepareMain(controllerUri);
+        AbstractHandler handler = new PrepareMain();
 
         handler.handleRequest();
-    }
-
-    private static Options getOptions() {
-        final Options options = new Options();
-        options.addOption("controlleruri", true, "The Pravega controller uri");
-        return options;
-    }
-
-    private static CommandLine parseCommandLineArgs(Options options, String[] args) throws ParseException {
-        CommandLineParser parser = new DefaultParser();
-        CommandLine cmd = parser.parse(options, args);
-        return cmd;
     }
 }
