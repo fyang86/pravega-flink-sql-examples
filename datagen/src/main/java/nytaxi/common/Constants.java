@@ -16,11 +16,9 @@ public class Constants {
     public static final String ZONE_LOOKUP_DATA = "taxi_zone_lookup.csv.gz";
 
     public static final String DEFAULT_SCOPE = "taxi";
-    public static final String DEFAULT_STREAM = "trip";
+    public static final String DEFAULT_TRIP_STREAM = "trip";
+    public static final String DEFAULT_POPDEST_STREAM = "popDest";
     public static final String DEFAULT_CONTROLLER_URI = "tcp://pravega:9090";
     public static final int DEFAULT_NO_SEGMENTS = 3;
     public static final boolean CREATE_STREAM = true;
-
-    public static final int DEFAULT_POPULAR_DEST_THRESHOLD = 20;
-
 }

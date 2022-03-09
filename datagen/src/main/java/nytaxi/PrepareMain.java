@@ -42,7 +42,7 @@ import static nytaxi.common.Constants.ZONE_LOOKUP_DATA;
             createStream();
         }
 
-        Stream streamInfo = Stream.of(getScope(), getStream());
+        Stream streamInfo = Stream.of(getScope(), getTripStream());
 
         FlinkPravegaWriter<TripRecord> writer = FlinkPravegaWriter.<TripRecord>builder()
                 .withPravegaConfig(getPravegaConfig())
