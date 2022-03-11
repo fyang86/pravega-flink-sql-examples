@@ -29,9 +29,9 @@ import static nytaxi.common.Constants.TRIP_DATA;
 import static nytaxi.common.Constants.ZONE_LOOKUP_DATA;
 
 @Slf4j
-    public class PrepareMain extends AbstractHandler {
+public class PrepareMain extends AbstractHandler {
 
-    public PrepareMain () {
+    public PrepareMain() {
         super();
     }
 

@@ -32,16 +32,16 @@ public class Helper {
 
         boolean scopeResult = streamManager.createScope(stream.getScope());
         if (scopeResult) {
-            log.info("created scope: {}" , stream.getScope());
+            log.info("created scope: {}", stream.getScope());
         } else {
-            log.info("scope: {} already exists" , stream.getScope());
+            log.info("scope: {} already exists", stream.getScope());
         }
 
         boolean streamResult = streamManager.createStream(stream.getScope(), stream.getStreamName(), streamConfig);
         if (streamResult) {
-            log.info("created stream: {}" , stream.getStreamName());
+            log.info("created stream: {}", stream.getStreamName());
         } else {
-            log.info("stream: {} already exists" , stream.getStreamName());
+            log.info("stream: {} already exists", stream.getStreamName());
         }
 
     }
@@ -53,8 +53,7 @@ public class Helper {
                 InputStream is = classloader.getResourceAsStream(taxiZoneLookupFilePath);
                 GZIPInputStream gzipInputStream = new GZIPInputStream(is);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(gzipInputStream, "UTF-8"));
-        )
-        {
+        ) {
             String line;
             boolean start = true;
             while (reader.ready() && (line = reader.readLine()) != null) {

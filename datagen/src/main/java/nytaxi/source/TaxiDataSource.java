@@ -40,8 +40,7 @@ public class TaxiDataSource implements SourceFunction<TripRecord> {
                 InputStream is = classloader.getResourceAsStream(tripDataFilePath);
                 GZIPInputStream gzipInputStream = new GZIPInputStream(is);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(gzipInputStream, "UTF-8"));
-        )
-        {
+        ) {
             int count = 0;
             String line;
             TripRecord tripRecord;
@@ -83,6 +82,7 @@ public class TaxiDataSource implements SourceFunction<TripRecord> {
     }
 
     @Override
-    public void cancel() { }
+    public void cancel() {
+    }
 
 }

@@ -36,15 +36,15 @@ public final class ZoneLookup implements Serializable {
 
         int offset = 1;
 
-        for (String data: tokens) {
+        for (String data : tokens) {
 
-            if ( offset == 1 ) {
+            if (offset == 1) {
                 builder.locationId(Integer.parseInt(data));
-            } else if ( offset == 2 ) {
+            } else if (offset == 2) {
                 builder.borough(data);
-            } else if ( offset == 3 ) {
+            } else if (offset == 3) {
                 builder.zone(data);
-            } else if ( offset == 4 ) {
+            } else if (offset == 4) {
                 builder.serviceZone(data);
             }
 

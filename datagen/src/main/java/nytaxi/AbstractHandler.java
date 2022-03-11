@@ -46,7 +46,7 @@ public abstract class AbstractHandler {
     }
 
     public PravegaConfig getPravegaConfig() {
-        return  PravegaConfig.fromDefaults()
+        return PravegaConfig.fromDefaults()
                 .withControllerURI(URI.create(controllerUri))
                 .withDefaultScope(scope);
     }

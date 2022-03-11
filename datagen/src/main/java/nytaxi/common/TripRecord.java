@@ -100,7 +100,7 @@ public final class TripRecord implements Serializable, Comparable<TripRecord> {
 
     @Override
     public int hashCode() {
-        return (int)this.rideId;
+        return (int) this.rideId;
     }
 
     @Override
@@ -136,28 +136,28 @@ public final class TripRecord implements Serializable, Comparable<TripRecord> {
 
         int offset = 1;
 
-        for (String data: tokens) {
+        for (String data : tokens) {
 
-            if ( offset == 6 || offset == 7 ) {
+            if (offset == 6 || offset == 7) {
                 offset++;
                 continue;
-            } else if ( offset > 9 ) {
+            } else if (offset > 9) {
                 break;
             }
 
-            if ( offset == 1 ) {
+            if (offset == 1) {
                 builder.vendorId(Integer.parseInt(data));
-            } else if ( offset == 2 ) {
+            } else if (offset == 2) {
                 builder.pickupTime(data);
-            } else if ( offset == 3 ) {
+            } else if (offset == 3) {
                 builder.dropOffTime(data);
-            } else if ( offset == 4 ) {
+            } else if (offset == 4) {
                 builder.passengerCount(Integer.parseInt(data));
-            } else if ( offset == 5 ) {
+            } else if (offset == 5) {
                 builder.tripDistance(Float.parseFloat(data));
-            } else if ( offset == 8 ) {
+            } else if (offset == 8) {
                 builder.startLocationId(Integer.parseInt(data));
-            } else if ( offset == 9 ) {
+            } else if (offset == 9) {
                 builder.destLocationId(Integer.parseInt(data));
             }
 
