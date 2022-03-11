@@ -25,15 +25,11 @@ public class TaxiDataSource implements SourceFunction<TripRecord> {
 
     private final String tripDataFilePath;
     private final Map<Integer, ZoneLookup> zoneLookupRecordMap;
-    private int limit = Integer.MAX_VALUE;
+    private final long speedup = 1000L;
 
     public TaxiDataSource(String tripDataFilePath, Map<Integer, ZoneLookup> zoneLookupRecordMap) {
         this.tripDataFilePath = tripDataFilePath;
         this.zoneLookupRecordMap = zoneLookupRecordMap;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
     }
 
     @Override
@@ -51,12 +47,12 @@ public class TaxiDataSource implements SourceFunction<TripRecord> {
             TripRecord tripRecord;
             boolean start = true;
             int rideId = 1;
+            long startTime = System.nanoTime();
             while (reader.ready() && (line = reader.readLine()) != null) {
                 if (start) {
                     start = false;
                     continue;
                 }
-                if (count == limit) { break; }
 
                 // read first ride
                 tripRecord = TripRecord.parse(line);
@@ -71,6 +67,16 @@ public class TaxiDataSource implements SourceFunction<TripRecord> {
                 tripRecord.setDestLocationServiceZone(destLocZoneLookup.getServiceZone());
                 sourceContext.collect(tripRecord);
                 count++;
+
+                if ((long) count >= speedup) {
+                    long endTime = System.nanoTime();
+                    for (long diff = endTime - startTime; diff < 1000000000L; diff = endTime - startTime) {
+                        Thread.sleep(1L);
+                        endTime = System.nanoTime();
+                    }
+                    startTime = endTime;
+                    count = 0;
+                }
             }
 
         }
