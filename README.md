@@ -5,9 +5,9 @@ and @wuchong's excellent work [flink-sql-training](http://wuchong.me/blog/2019/0
 本文假定您已具备基础的 SQL 知识。
 
 ## Demo 组件
-- Pravega
-- Flink
-- Zeppelin
+- Pravega 0.10.1
+- Flink 1.13.1
+- Zeppelin 0.10.1
 
 本sample 程序是基于 Docker 进行的，因此你只需要安装了 Docker 即可。不需要依赖 Java、Scala 环境、或是IDE。
 > **_注意:_** 使用 Docker 启动上述组件，请保证 Docker 内存大于 4G (推荐 6G)。
